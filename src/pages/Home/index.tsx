@@ -29,44 +29,49 @@ import { CartContext } from '../../contexts/CartContext'
 import { formatPrice } from '../../utils/format'
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../services/api'
-
-interface CoffeesProps {
-  id: number
-  name: string
-  description: string
-  price: number
-  img: string
-  tags: string[]
-  amount: number
-}
-
-interface ProductItemsAmount {
-  [key: number]: number
-}
+import { Product } from '../../types'
 
 export function Home() {
   const { addProduct } = useContext(CartContext)
 
-  const [coffeeList, setCoffeeList] = useState<CoffeesProps[]>([])
-  const [productAmount, setProductAmount] = useState<any>([])
+  const [products, setProducts] = useState<Product[]>([])
 
-  async function getCoffees() {
+  async function getProducts() {
     try {
-      const response = await api.get('/cafes')
-      setCoffeeList(response.data)
+      const response = await api.get<Product[]>('/products')
+      const data = response.data.map((product) => ({
+        ...product,
+        amount: 1,
+      }))
+
+      setProducts(data)
     } catch (error) {
       console.error(error)
     }
   }
 
-  const getAmount = () => {
-    console.log('coffeeList asda>>', coffeeList)
+  useEffect(() => {
+    getProducts()
+  }, [])
+
+  function handleAmountProduct(productId: number, amount: number) {
+    const updatedProductAmount = [...products]
+
+    const productAmount = updatedProductAmount.find(
+      (product) => product.id === productId,
+    )
+
+    if (amount <= 0) return
+
+    if (productAmount) {
+      productAmount.amount = amount
+    }
+    setProducts(updatedProductAmount)
   }
 
   useEffect(() => {
-    getCoffees()
-    getAmount()
-  }, [])
+    console.log('itemsAmount', products)
+  }, [products])
 
   return (
     <HomeContainer>
@@ -110,29 +115,41 @@ export function Home() {
       </ImgCoffeeDelivery>
 
       <CoffeeSection>
-        {coffeeList?.map((coffee) => {
+        {products?.map((product) => {
           return (
-            <CoffeeCart key={coffee.id}>
+            <CoffeeCart key={product.id}>
               <CoffeeDetails>
-                <img src={coffee.img} alt="" />
-                <span>{coffee.tags}</span>
-                <h3>{coffee.name}</h3>
-                <p>{coffee.description}</p>
+                <img src={product.img} alt="" />
+                <span>{product.tags}</span>
+                <h3>{product.name}</h3>
+                <p>{product.description}</p>
               </CoffeeDetails>
               <CoffeeBuy>
-                <span>{formatPrice(coffee.price)}</span>
+                <span>{formatPrice(product.price)}</span>
+
                 <CoffeeQuantity>
                   <CoffeeMinusButton>
-                    <Minus weight="bold" />
+                    <Minus
+                      weight="bold"
+                      onClick={() =>
+                        handleAmountProduct(product.id, product.amount - 1)
+                      }
+                    />
                   </CoffeeMinusButton>
-                  <p>{coffee.amount}</p>
+                  <p>{product.amount}</p>
                   <CoffeePlusButton>
-                    <Plus weight="bold" />
+                    <Plus
+                      weight="bold"
+                      onClick={() =>
+                        handleAmountProduct(product.id, product.amount + 1)
+                      }
+                    />
                   </CoffeePlusButton>
                 </CoffeeQuantity>
+
                 <CoffeeShoppingCartButton
                   onClick={() => {
-                    addProduct(coffee.id, coffee.amount)
+                    addProduct(product.id, product.amount)
                   }}
                 >
                   <ShoppingCart size={22} weight="fill" />

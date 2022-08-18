@@ -44,9 +44,35 @@ import {
   TrashButton,
   UFInput,
 } from './styles'
+import { formatPrice } from '../../utils/format'
 
 export function Checkout() {
-  const { cart } = useContext(CartContext)
+  const { cart, removeProduct, updatedProductAmount } = useContext(CartContext)
+
+  const cartFormatted = cart.map((product) => ({
+    ...product,
+    priceFormatted: formatPrice(product.price),
+    subTotal: formatPrice(product.price * product.amount),
+  }))
+
+  const total = cart.reduce((sumTotal, product) => {
+    return sumTotal + product.price * product.amount
+  }, 0)
+
+  const totalFormated = formatPrice(total)
+  const totalWithTax = formatPrice(total + 3.5)
+
+  function handleRemoveProduct(productId: number) {
+    removeProduct(productId)
+  }
+
+  function handleDecrementalProduct(productId: number, amount: number) {
+    updatedProductAmount(productId, amount + 1)
+  }
+
+  function handleIncrementalProduct(productId: number, amount: number) {
+    updatedProductAmount(productId, amount + 1)
+  }
 
   return (
     <CheckoutContainer>
@@ -113,29 +139,41 @@ export function Checkout() {
       <AsideContainer>
         <h1>Cafés Selecionados</h1>
         <AsideWrapper>
-          {cart.map((cart) => {
+          {cartFormatted.map((product) => {
             return (
-              <CoffeeProductCart key={cart.id}>
-                <img src={cart.img} alt="" />
+              <CoffeeProductCart key={product.id}>
+                <img src={product.img} alt={product.name} />
                 <div>
-                  <p>{cart.name}</p>
+                  <p>{product.name}</p>
                   <ProductContainer>
                     <CoffeeQuantity>
                       <CoffeeMinusButton>
-                        <Minus weight="bold" />
+                        <Minus
+                          weight="bold"
+                          onClick={() =>
+                            handleDecrementalProduct(product.id, product.amount)
+                          }
+                        />
                       </CoffeeMinusButton>
-                      <p>{cart.amount}</p>
+                      <p>{product.amount}</p>
                       <CoffeePlusButton>
-                        <Plus weight="bold" />
+                        <Plus
+                          weight="bold"
+                          onClick={() =>
+                            handleIncrementalProduct(product.id, product.amount)
+                          }
+                        />
                       </CoffeePlusButton>
                     </CoffeeQuantity>
-                    <TrashButton>
+                    <TrashButton
+                      onClick={() => handleRemoveProduct(product.id)}
+                    >
                       <Trash />
                       <p>REMOVER</p>
                     </TrashButton>
                   </ProductContainer>
                 </div>
-                <span>R$ {String(cart.price).padEnd(4, '0')} </span>
+                <span>{product.subTotal}</span>
               </CoffeeProductCart>
             )
           })}
@@ -144,7 +182,7 @@ export function Checkout() {
               <thead>
                 <tr>
                   <td>Total de itens</td>
-                  <td>R$ 9,90</td>
+                  <td>{totalFormated}</td>
                 </tr>
                 <tr>
                   <td>Entrega</td>
@@ -152,7 +190,7 @@ export function Checkout() {
                 </tr>
                 <tr>
                   <td>Total</td>
-                  <td>R$ 33,20</td>
+                  <td>{totalWithTax}</td>
                 </tr>
               </thead>
             </table>

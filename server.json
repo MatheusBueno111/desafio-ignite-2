@@ -1,13 +1,12 @@
 {
-  "cafes" : [
+  "products" : [
     {
       "id": 1,
       "name": "Expresso Tradicional",
       "description": "O tradicional café feito com água quente e grãos moídos",
       "price": 9.90,
       "img": "/Coffee/tradicional.svg",
-      "tags": ["Tradicional"],
-      "amount": 1
+      "tags": ["Tradicional"]
     },
     {
       "id": 2,
@@ -15,8 +14,7 @@
       "description": "Expresso diluído, menos intenso que o tradicional",
       "price": 9.90,
       "img": "/Coffee/americano.svg",
-      "tags": ["Tradicional"],
-      "amount": 1
+      "tags": ["Tradicional"]
     },
     {
       "id": 3,
@@ -24,8 +22,7 @@
       "description": "Café expresso tradicional com espuma cremosa",
       "price": 9.90,
       "img": "/Coffee/cremoso.svg",
-      "tags": ["Tradicional"],
-      "amount": 1
+      "tags": ["Tradicional"]
     },
     {
       "id": 4,
@@ -33,8 +30,7 @@
       "description": "Bebida preparada com café expresso e cubos de gelo",
       "price": 9.90,
       "img": "/Coffee/gelado.svg",
-      "tags": ["Tradicional"],
-      "amount": 1
+      "tags": ["Tradicional"] 
     },
     {
       "id": 5,
@@ -42,8 +38,7 @@
       "description": "Meio a meio de expresso tradicional com leite vaporizado",
       "price": 9.90,
       "img": "/Coffee/comLeite.svg",
-      "tags": ["Tradicional", "Com Leite"],
-      "amount": 1
+      "tags": ["Tradicional", "Com Leite"]
     },
     {
       "id": 6,
@@ -52,8 +47,7 @@
         "Uma dose de café expresso com o dobro de leite e espuma cremosa",
       "price": 9.90,
       "img": "/Coffee/latte.svg",
-      "tags": ["Tradicional", "Com Leite"],
-      "amount": 1
+      "tags": ["Tradicional", "Com Leite"]
     },
     {
       "id": 7,
@@ -62,8 +56,7 @@
         "Bebida com canela feita de doses igauis de café, leite e espuma",
       "price": 9.90,
       "img": "/Coffee/capuccino.svg",
-      "tags": ["Tradicional", "Com Leite"],
-      "amount": 1
+      "tags": ["Tradicional", "Com Leite"] 
     },
     {
       "id": 8,
@@ -72,8 +65,7 @@
         "Café expresso misturado com um pouco de leite quente e espuma",
       "price": 9.90,
       "img": "/Coffee/macchiato.svg",
-      "tags": ["Tradicional", "Com Leite"],
-      "amount": 1
+      "tags": ["Tradicional", "Com Leite"]
     },
     {
       "id": 9,
@@ -81,8 +73,7 @@
       "description": "Café expresso com calda de chocolate, pouco leite e espuma",
       "price": 9.90,
       "img": "/Coffee/mochaccino.svg",
-      "tags": ["Tradicional", "Com Leite"],
-      "amount": 1
+      "tags": ["Tradicional", "Com Leite"]  
     },
     {
       "id": 10,
@@ -90,8 +81,7 @@
       "description": "Bebida feita com chocolate dissolvido no leite quente e café",
       "price": 9.90,
       "img": "/Coffee/chocolateQuente.svg",
-      "tags": ["Especial", "Com Leite"],
-      "amount": 1
+      "tags": ["Especial", "Com Leite"] 
     },
     {
       "id": 11,
@@ -100,8 +90,7 @@
         "Drink gelado de café expresso com rum, creme de leite e hortelã",
       "price": 9.90,
       "img": "/Coffee/cubano.svg",
-      "tags": ["Especial", "Alcoólico", "Gelado"],
-      "amount": 1
+      "tags": ["Especial", "Alcoólico", "Gelado"]
     },
     {
       "id": 12,
@@ -109,8 +98,7 @@
       "description": "Bebida adocicada preparada com café e leite de coco",
       "price": 9.90,
       "img": "/Coffee/havaiano.svg",
-      "tags": ["Especial"],
-      "amount": 1
+      "tags": ["Especial"]
     },
     {
       "id": 13,
@@ -118,8 +106,7 @@
       "description": "Bebida preparada com grãos de café árabe e especiarias",
       "price": 9.90,
       "img": "/Coffee/arabe.svg",
-      "tags": ["Especial"],
-      "amount": 1
+      "tags": ["Especial"]
     },
     {
       "id": 14,
@@ -127,9 +114,65 @@
       "description": "Bebida a base de café, uísque irlandês, açucar e chantilly",
       "price": 9.90,
       "img": "/Coffee/irlandes.svg",
-      "tags": ["Especial"],
+      "tags": ["Especial"]
+    }
+  ],
+  "stock": [
+    {
+      "id": 1,
+      "amount": 3
+    },
+    {
+      "id": 2,
+      "amount": 5
+    },
+    {
+      "id": 3,
+      "amount": 2
+    },
+    {
+      "id": 4,
       "amount": 1
+    },
+    {
+      "id": 5,
+      "amount": 5
+    },
+    {
+      "id": 6,
+      "amount": 10
+    },
+    {
+      "id": 7,
+      "amount": 3
+    },
+    {
+      "id": 8,
+      "amount": 5
+    },
+    {
+      "id": 9,
+      "amount": 2
+    },
+    {
+      "id": 10,
+      "amount": 1
+    },
+    {
+      "id": 11,
+      "amount": 5
+    },
+    {
+      "id": 12,
+      "amount": 10
+    },
+    {
+      "id": 13,
+      "amount": 7
+    },
+    {
+      "id": 14,
+      "amount": 6
     }
   ]
-  
 }

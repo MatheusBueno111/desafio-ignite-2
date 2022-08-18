@@ -1,17 +1,13 @@
 import { createContext, ReactNode, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { api } from '../services/api'
-
-interface Product {
-  id: number
-  name: string
-  img: string
-  price: number
-  amount: number
-}
+import { Product } from '../types'
 
 interface CartContextType {
   cart: Product[]
-  addProduct: (id: number, amount: number) => void
+  addProduct: (productId: number, productAmount: number) => void
+  removeProduct: (productId: number) => void
+  updatedProductAmount: (productId: number, amount: number) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -27,22 +23,81 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     console.log('cart :>>', cart)
   }, [cart])
 
-  async function addProduct(id: number, amount: number) {
+  async function addProduct(productId: number, productAmount: number) {
     try {
       const updatedCart = [...cart]
 
-      const response = await api.get(`/cafes/${id}`)
-      const product = response.data
+      const productExists = updatedCart.find(
+        (product) => product.id === productId,
+      )
 
-      const productExists = updatedCart.find((product) => product.id === id)
+      const currentAmount = productExists ? productExists.amount : 0
+      const amount = currentAmount + productAmount
 
-      // console.log('productExists :>>', productExists)
+      const productStock = await api.get(`/stock/${productId}`)
+      const productStockAmount = productStock.data.amount
 
-      if (productExists) {
-        productExists.amount = productExists.amount + amount
-      } else return setCart([...cart, product])
-    } catch (error) {
-      console.error(error)
+      if (productStockAmount >= amount) {
+        if (productExists) {
+          productExists.amount = amount
+        } else {
+          const product = await api.get(`/products/${productId}`)
+          const newProduct = {
+            ...product.data,
+            amount: productAmount,
+          }
+          updatedCart.push(newProduct)
+        }
+
+        setCart(updatedCart)
+      } else if (productExists) {
+        const stockAmount = productStockAmount - productExists.amount
+        toast.error(
+          `Quantidade solicitada fora do estoque, no estoque: ${stockAmount}`,
+        )
+      }
+    } catch {
+      toast.error('Erro na adição do produto')
+    }
+  }
+
+  async function removeProduct(productId: number) {
+    try {
+      const updatedCart = [...cart]
+
+      const productIndex = updatedCart.findIndex(
+        (product) => product.id === productId,
+      )
+
+      if (productIndex >= 0) {
+        updatedCart.splice(productIndex, 1)
+        setCart(updatedCart)
+      }
+    } catch {
+      toast.error('Erro na remoção do produto')
+    }
+  }
+
+  async function updatedProductAmount(productId: number, amount: number) {
+    try {
+      const updatedCart = [...cart]
+      const product = await api.get(`/stock/${productId}`)
+      const productExists = updatedCart.find(
+        (product) => product.id === productId,
+      )
+
+      if (amount <= 0) return
+
+      const productAmount = product.data.amount
+
+      if (productExists && productAmount >= amount && amount > 0) {
+        productExists.amount = amount
+        setCart(updatedCart)
+      } else {
+        toast.error('Quantidade solicitada fora do estoque')
+      }
+    } catch {
+      toast.error('Erro na alteração de quantidade do produto')
     }
   }
 
@@ -51,99 +106,11 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       value={{
         cart,
         addProduct,
+        removeProduct,
+        updatedProductAmount,
       }}
     >
       {children}
     </CartContext.Provider>
   )
 }
-
-// function updateAmountHomeCart(id: number, amount: number) {
-//   const updateCoffeeListAmount = [...coffeeList]
-//   const newCoffeeList = updateCoffeeListAmount.map((coffee) => {
-//     if (coffee.id === id && amount > 0) {
-//       return {
-//         ...coffee,
-//         amount,
-//       }
-//     } else return coffee
-//   })
-
-//   setCoffeeList(newCoffeeList)
-// }
-
-// function updateAmountCheckoutCart(id: number, amount: number) {
-//   const updateProduct = [...product]
-//   const newProduct = updateProduct?.map((product) => {
-//     if (product.id === id && amount > 0) {
-//       return {
-//         ...product,
-//         amount,
-//       }
-//     } else return product
-//   })
-//   setProductTotalAmount((state) => {
-//     return state + amount
-//   })
-//   setProduct(newProduct)
-// }
-
-// function createNewProduct(id: number, amount: number) {
-//   const createAuxNewProduct = [...coffeeList]
-//   const auxProductList = [...product]
-//   const productListExist = auxProductList.find(
-//     (prodocut) => prodocut.id === id,
-//   )
-
-//   if (productListExist) {
-//     const newProduct = auxProductList.map((product) => {
-//       if (product.id === id) {
-//         return {
-//           ...product,
-//           amount: product.amount + amount,
-//         }
-//       } else return { ...product }
-//     })
-//     setProductTotalAmount((state) => {
-//       return state + amount
-//     })
-//     setProduct(newProduct)
-//   } else
-//     createAuxNewProduct.map((element) => {
-//       if (element.id === id) {
-//         const newProduct: Product = {
-//           id,
-//           img: element.img,
-//           name: element.name,
-//           price: element.price,
-//           amount: element.amount,
-//         }
-//         setProductTotalAmount((state) => {
-//           return state + amount
-//         })
-//         return setProduct((state) => [...state, newProduct]) // adicionando novos carts
-//       } else return product
-//     })
-
-//   const newCoffeeList = createAuxNewProduct.map((aux) => {
-//     if (aux.id === id) {
-//       return {
-//         ...aux,
-//         amount: 1,
-//       }
-//     } else return aux
-//   })
-
-//   setCoffeeList(newCoffeeList)
-// }
-
-// function deleteProduct(id: number, amount: number) {
-//   const updateProductList = [...product]
-//   const newProductList = updateProductList.filter((product) => {
-//     return product.id !== id
-//   })
-//   setProductTotalAmount((state) => {
-//     return state - amount
-//   })
-//   setProduct(newProductList)
-// }
