@@ -12,3 +12,14 @@ export interface Stock {
   id: number
   amount: number
 }
+
+export interface NewCreateUserFormData {
+  cep: string
+  adress: string
+  number: number
+  complement?: string
+  district: string
+  city: string
+  uf: string
+  payment: string
+}

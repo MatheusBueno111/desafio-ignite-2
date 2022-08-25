@@ -51,7 +51,6 @@ export const FormContainer = styled.form`
   max-width: 35rem;
   margin-top: 2rem;
 `
-
 export const BaseInput = styled.input`
   display: flex;
   border: 1px solid ${(props) => props.theme['base-button']};
@@ -91,7 +90,9 @@ export const CityInput = styled(BaseInput)`
 export const UFInput = styled(BaseInput)`
   max-width: 3.75rem;
 `
+
 export const CheckoutInfosPayment = styled.div`
+  margin-top: 1px red;
   display: flex;
   flex-direction: column;
   margin-top: 0.75rem;
@@ -128,29 +129,26 @@ export const PaymentButtonTypes = styled.div`
   gap: 0.75rem;
   justify-content: space-between;
   margin-top: 2rem;
-`
-const BaseButton = styled.button`
-  flex: 1;
-  display: flex;
-  padding: 1rem;
-  font-size: 0.75rem;
-  border: none;
-  background-color: ${(props) => props.theme['base-button']};
-  border-radius: 6px;
-  gap: 0.75rem;
-  color: ${(props) => props.theme['purple-400']};
-  p {
-    color: ${(props) => props.theme['base-text']};
-  }
 
-  :hover {
-    background-color: ${(props) => props.theme['base-hover']};
+  button {
+    flex: 1;
+    display: flex;
+    padding: 1rem;
+    font-size: 0.75rem;
+    border: 1px solid transparent;
+    background-color: ${(props) => props.theme['base-button']};
+    border-radius: 6px;
+    gap: 0.75rem;
+    color: ${(props) => props.theme['purple-400']};
+    p {
+      color: ${(props) => props.theme['base-text']};
+    }
+
+    :hover {
+      background-color: ${(props) => props.theme['base-hover']};
+    }
   }
 `
-export const ButtonCreditCard = styled(BaseButton)``
-export const ButtonDebitCard = styled(BaseButton)``
-export const ButtonMoney = styled(BaseButton)``
-
 export const AsideContainer = styled.aside`
   display: flex;
   flex: 1;
@@ -205,20 +203,6 @@ export const CoffeeQuantity = styled.div`
   border-radius: 6px;
   font-size: 1.25rem;
 `
-// pegando o button da Home
-// export const BaseButtonCoffeeQuantity = styled.button`
-//   border: 0;
-//   background-color: transparent;
-//   color: red;
-// `
-// export const CoffeeMinusButton = styled(BaseButtonCoffeeQuantity)`
-//   font-size: 1rem;
-//   color: red;
-// `
-
-// export const CoffeePlusButton = styled(BaseButtonCoffeeQuantity)`
-//   font-size: 1rem;
-// `
 
 export const TrashButton = styled.button`
   display: flex;
@@ -262,19 +246,24 @@ export const DeliveryValues = styled.div`
 
   button {
     display: flex;
+    width: 100%;
     justify-content: center;
-    border: 0;
-    background-color: ${(props) => props.theme['yellow-400']};
+    margin-top: 1.5rem;
+
     padding: 12px 8px;
     border-radius: 6px;
-    margin-top: 2rem;
-    font-size: 0.875rem;
+    border: 0;
+
     font-weight: 700;
     color: ${(props) => props.theme.white};
-    transition: background-color 0.2s;
+    background-color: ${(props) => props.theme['yellow-400']};
 
     :hover {
       background-color: ${(props) => props.theme['yellow-700']};
+    }
+
+    :disabled {
+      cursor: not-allowed;
     }
   }
 `

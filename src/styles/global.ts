@@ -22,7 +22,7 @@ export const GlobalStyle = createGlobalStyle`
 
   body, input, textarea, button {
     font-family: 'Roboto', sans-serif;
-    font-weight: 400;
+    font-weight: 400; 
     font-size: 1rem;
   }
 
@@ -34,4 +34,5 @@ export const GlobalStyle = createGlobalStyle`
     max-width: 1440px;
     margin: 0 auto;
   }
+
 `

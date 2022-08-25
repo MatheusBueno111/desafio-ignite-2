@@ -1,6 +1,3 @@
-import { useContext } from 'react'
-import { CartContext } from '../../contexts/CartContext'
-
 import {
   Bank,
   CreditCard,
@@ -22,9 +19,6 @@ import {
   AdressInput,
   AsideContainer,
   AsideWrapper,
-  ButtonCreditCard,
-  ButtonDebitCard,
-  ButtonMoney,
   CepInput,
   CheckoutContainer,
   CheckoutInfosPayment,
@@ -45,9 +39,19 @@ import {
   UFInput,
 } from './styles'
 import { formatPrice } from '../../utils/format'
+import { FocusEvent, useContext, useState } from 'react'
+import { CartContext } from '../../contexts/CartContext'
+import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../contexts/UserContext'
+import { NewCreateUserFormData } from '../../types'
 
 export function Checkout() {
   const { cart, removeProduct, updatedProductAmount } = useContext(CartContext)
+  const { createNewUser } = useContext(UserContext)
+  const navigate = useNavigate()
+
+  const [paymentType, setPaymentType] = useState('')
 
   const cartFormatted = cart.map((product) => ({
     ...product,
@@ -74,6 +78,45 @@ export function Checkout() {
     updatedProductAmount(productId, amount + 1)
   }
 
+  const { register, handleSubmit, reset, watch, setValue, setFocus } =
+    useForm<NewCreateUserFormData>({
+      defaultValues: {
+        adress: '',
+        complement: '',
+        district: '',
+        city: '',
+        uf: '',
+      },
+    })
+
+  function handleCreateNewUser(data: NewCreateUserFormData) {
+    console.log(data)
+    const parsedValues = {
+      ...data,
+      payment: paymentType,
+    }
+    createNewUser(parsedValues)
+    reset()
+    navigate('/success')
+  }
+
+  function handleCheckCep(event: FocusEvent<HTMLInputElement>) {
+    const cep = event.target.value.replace(/\D/g, '')
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        setValue('adress', data.logradouro)
+        setValue('district', data.bairro)
+        setValue('city', data.localidade)
+        setValue('uf', data.uf)
+        setFocus('number')
+      })
+  }
+
+  const adress = watch('adress')
+  const isSubmitDisabled = !adress || cart.length === 0 || paymentType === ''
+
   return (
     <CheckoutContainer>
       <CheckoutWrapper>
@@ -86,29 +129,67 @@ export function Checkout() {
             <h4>Endereço de Entrega</h4>
             <p>Informe o endereço onde deseja receber seu pedido</p>
           </DeleviryWrapper>
-          <FormContainer>
+
+          <FormContainer
+            onSubmit={handleSubmit(handleCreateNewUser)}
+            id="deliveryForm"
+          >
             <label htmlFor="cep"></label>
-            <CepInput id="cep" placeholder="cep" />
+            <CepInput
+              id="cep"
+              placeholder="Cep"
+              pattern="[0-9]{5}[-][0-9]{3}"
+              title="Formato XXXXX-XXX"
+              {...register('cep', { required: true })}
+              onBlur={handleCheckCep}
+              // "\d{5}[-.\s]?\d{3}"
+            />
 
             <label htmlFor="adress"></label>
-            <AdressInput id="adress" placeholder="Rua" />
+            <AdressInput
+              id="adress"
+              placeholder="Rua"
+              {...register('adress', { required: true })}
+            />
 
             <label htmlFor="number"></label>
-            <NumberInput id="number" placeholder="Número" />
+            <NumberInput
+              id="number"
+              type="number"
+              placeholder="Número"
+              {...register('number', { required: true, valueAsNumber: true })}
+            />
 
             <label htmlFor="complement"></label>
-            <ComplementInput id="complement" placeholder="Complemento" />
+            <ComplementInput
+              id="complement"
+              placeholder="Complemento"
+              {...register('complement', { required: false })}
+            />
 
             <label htmlFor="district"></label>
-            <DistrictInput id="district" placeholder="district" />
+            <DistrictInput
+              id="district"
+              placeholder="Bairro"
+              {...register('district', { required: true })}
+            />
 
             <label htmlFor="city"></label>
-            <CityInput id="city" placeholder="city" />
+            <CityInput
+              id="city"
+              placeholder="Cidade"
+              {...register('city', { required: true })}
+            />
 
             <label htmlFor="uf"></label>
-            <UFInput id="uf" placeholder="uf" />
+            <UFInput
+              id="uf"
+              placeholder="UF"
+              {...register('uf', { required: true })}
+            />
           </FormContainer>
         </CheckoutInfosWrapper>
+
         <CheckoutInfosPayment>
           <PaymentWrapper>
             <span>
@@ -119,19 +200,46 @@ export function Checkout() {
               O pagamento é feito na entrega. Escolha a forma que deseja pagar
             </p>
           </PaymentWrapper>
+
           <PaymentButtonTypes>
-            <ButtonCreditCard>
+            <button
+              onClick={() => setPaymentType('Cartão de Crédito')}
+              style={
+                paymentType === 'Cartão de Crédito'
+                  ? { backgroundColor: '#EBE5F9', border: '1px solid #8047F8' }
+                  : {}
+              }
+            >
               <CreditCard size={16} />
               <p>CARTÃO DE CRÉDITO</p>
-            </ButtonCreditCard>
-            <ButtonDebitCard>
+            </button>
+
+            <button
+              onClick={() => setPaymentType('Cartão de Débito')}
+              style={
+                paymentType === 'Cartão de Débito'
+                  ? { backgroundColor: '#EBE5F9', border: '1px solid #8047F8' }
+                  : {}
+              }
+            >
               <Bank size={16} />
-              <p>CARTÃO DE CRÉDITO</p>
-            </ButtonDebitCard>
-            <ButtonMoney>
+              <p>CARTÃO DE DÉBITO</p>
+            </button>
+
+            <button
+              onClick={() => setPaymentType('Dinheiro')}
+              style={
+                paymentType === 'Dinheiro'
+                  ? {
+                      backgroundColor: '#EBE5F9',
+                      border: '1px solid #8047F8',
+                    }
+                  : {}
+              }
+            >
               <Money size={16} />
               <p>DINHEIRO</p>
-            </ButtonMoney>
+            </button>
           </PaymentButtonTypes>
         </CheckoutInfosPayment>
       </CheckoutWrapper>
@@ -195,7 +303,13 @@ export function Checkout() {
               </thead>
             </table>
 
-            <button>CONFIRMAR PEDIDO</button>
+            <button
+              type="submit"
+              form="deliveryForm"
+              disabled={isSubmitDisabled}
+            >
+              CONFIRMAR PEDIDO
+            </button>
           </DeliveryValues>
         </AsideWrapper>
       </AsideContainer>

@@ -32,6 +32,8 @@ import { api } from '../../services/api'
 import { Product } from '../../types'
 
 export function Home() {
+  // const { 'yellow-700': teste } = useContext(ThemeContext)
+
   const { addProduct } = useContext(CartContext)
 
   const [products, setProducts] = useState<Product[]>([])
@@ -85,7 +87,7 @@ export function Home() {
 
       <ItemsList>
         <ItemListShoppingCart>
-          <div>
+          <div className="shoppingCart">
             <ShoppingCart size={16} weight="fill" />
           </div>
           <span>Compra simples e segura</span>
@@ -150,6 +152,7 @@ export function Home() {
                 <CoffeeShoppingCartButton
                   onClick={() => {
                     addProduct(product.id, product.amount)
+                    handleAmountProduct(product.id, 1)
                   }}
                 >
                   <ShoppingCart size={22} weight="fill" />

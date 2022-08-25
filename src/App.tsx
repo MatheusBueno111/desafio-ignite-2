@@ -5,15 +5,18 @@ import { GlobalStyle } from './styles/global'
 import { defaultTheme } from './styles/themes/default'
 import { CartContextProvider } from './contexts/CartContext'
 import { ToastContainer } from 'react-toastify'
+import { UserContextProvider } from './contexts/UserContext'
 
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
-        <CartContextProvider>
-          <Router />
-          <ToastContainer autoClose={1000} />
-        </CartContextProvider>
+        <UserContextProvider>
+          <CartContextProvider>
+            <Router />
+            <ToastContainer autoClose={1500} />
+          </CartContextProvider>
+        </UserContextProvider>
       </BrowserRouter>
       <GlobalStyle />
     </ThemeProvider>

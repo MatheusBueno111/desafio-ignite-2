@@ -55,6 +55,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         toast.error(
           `Quantidade solicitada fora do estoque, no estoque: ${stockAmount}`,
         )
+      } else {
+        toast.error(`Quantidade solicitada fora do estoque`)
       }
     } catch {
       toast.error('Erro na adição do produto')
@@ -73,6 +75,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         updatedCart.splice(productIndex, 1)
         setCart(updatedCart)
       }
+
+      toast.success('Produto removido com sucesso')
     } catch {
       toast.error('Erro na remoção do produto')
     }
