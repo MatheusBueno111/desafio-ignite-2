@@ -1,4 +1,4 @@
-# Desafios Ignite React 2022 <img width="20" height="20" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" />
+# Desafio Ignite React 2022 <img width="20" height="20" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" />
 
 <br />
 
@@ -30,4 +30,9 @@ Durante este desafio, utilizamos conceitos um pouco mais avançados desenvolvend
 &nbsp;
 
 
+## Instalação
 
+* Clone this repository
+* yarn install
+* yarn dev
+* json-server --watch server.json  
