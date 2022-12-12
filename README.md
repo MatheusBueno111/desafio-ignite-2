@@ -4,8 +4,6 @@
 
 &nbsp;
 
-
-
 ## Desafio 02 - Coffee Delivery
 <img src="https://user-images.githubusercontent.com/71772559/178171983-f724d1a7-deb4-4d13-aa92-09e1cac4ec36.png" align="center" />
 
@@ -24,9 +22,7 @@ Durante este desafio, utilizamos conceitos um pouco mais avançados desenvolvend
 
 <br />
 
-
-
-<a href="/desafio-ignite-2" target="_blank">
+<a href="https://github.com/MatheusBueno111/desafio-ignite-2/" target="_blank">
 <img src="https://user-images.githubusercontent.com/71772559/178192378-234b9c46-7e31-47fb-8ddf-245617d8b198.png" />
 </a>
 
@@ -35,4 +31,6 @@ Durante este desafio, utilizamos conceitos um pouco mais avançados desenvolvend
 </a>
 
 &nbsp;
+
+
 
