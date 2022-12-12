@@ -22,9 +22,6 @@ Durante este desafio, utilizamos conceitos um pouco mais avançados desenvolvend
 
 <br />
 
-<a href="https://github.com/MatheusBueno111/desafio-ignite-2/" target="_blank">
-<img src="https://user-images.githubusercontent.com/71772559/178192378-234b9c46-7e31-47fb-8ddf-245617d8b198.png" />
-</a>
 
 <a href="https://www.figma.com/file/5yT9ZzZmRQRS4yivGGB3pl/Coffee-Delivery/duplicate" target="_blank">
 <img src="https://user-images.githubusercontent.com/71772559/178192253-4fe4757c-de57-4878-a38c-a483c25670b1.png" />
