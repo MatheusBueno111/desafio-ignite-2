@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 import { NewCreateUserFormData } from '../types'
 
 interface UserContextType {
@@ -15,12 +15,9 @@ interface UserConxextProviderProps {
 export function UserContextProvider({ children }: UserConxextProviderProps) {
   const [user, setUser] = useState<NewCreateUserFormData>()
 
-  useEffect(() => {
-    console.log('user:>>', user)
-  }, [user])
-
   function createNewUser(data: NewCreateUserFormData) {
     const newUser: NewCreateUserFormData = {
+      cep: data.cep,
       adress: data.adress,
       city: data.city,
       number: data.number,

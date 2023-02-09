@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../services/api'
 import { Product } from '../types'
@@ -18,10 +18,6 @@ interface CartContextProviderProps {
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
   const [cart, setCart] = useState<Product[]>([])
-
-  useEffect(() => {
-    console.log('cart :>>', cart)
-  }, [cart])
 
   async function addProduct(productId: number, productAmount: number) {
     try {

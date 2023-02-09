@@ -71,10 +71,6 @@ export function Home() {
     setProducts(updatedProductAmount)
   }
 
-  useEffect(() => {
-    console.log('itemsAmount', products)
-  }, [products])
-
   return (
     <HomeContainer>
       <HomeMainContainer>

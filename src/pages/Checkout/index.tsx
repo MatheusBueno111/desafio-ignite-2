@@ -38,6 +38,7 @@ import {
   TrashButton,
   UFInput,
 } from './styles'
+
 import { formatPrice } from '../../utils/format'
 import { FocusEvent, useContext, useState } from 'react'
 import { CartContext } from '../../contexts/CartContext'
@@ -71,7 +72,7 @@ export function Checkout() {
   }
 
   function handleDecrementalProduct(productId: number, amount: number) {
-    updatedProductAmount(productId, amount + 1)
+    updatedProductAmount(productId, amount - 1)
   }
 
   function handleIncrementalProduct(productId: number, amount: number) {
@@ -90,7 +91,6 @@ export function Checkout() {
     })
 
   function handleCreateNewUser(data: NewCreateUserFormData) {
-    console.log(data)
     const parsedValues = {
       ...data,
       payment: paymentType,
@@ -105,7 +105,6 @@ export function Checkout() {
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         setValue('adress', data.logradouro)
         setValue('district', data.bairro)
         setValue('city', data.localidade)
