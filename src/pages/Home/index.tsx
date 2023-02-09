@@ -45,6 +45,7 @@ export function Home() {
         ...product,
         amount: 1,
       }))
+      console.log(data)
 
       setProducts(data)
     } catch (error) {
